@@ -12,7 +12,7 @@ namespace StarterAssets
 		public Vector2 look;
 		public bool jump;
 		public bool sprint;
-		public bool aimming;
+		public bool aim;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -72,7 +72,7 @@ namespace StarterAssets
 		}
         public void AimInput(bool newAimState)
         {
-            aimming = newAimState;
+            aim = newAimState;
         }
 
         private void OnApplicationFocus(bool hasFocus)

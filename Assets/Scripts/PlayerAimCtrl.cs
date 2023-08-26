@@ -22,6 +22,15 @@ public class PlayerAimCtrl : MonoBehaviour
 
     private void Update()
     {
+        Aim();
+
+       
+
+        
+    }
+
+    private Vector3 GetMouseWorldPosistion()
+    {
         Vector3 mouseWorldPosition = Vector3.zero;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -30,14 +39,17 @@ public class PlayerAimCtrl : MonoBehaviour
             debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
         }
-
+        return mouseWorldPosition;
+    }    
+    private void Aim()
+    {
         if (starterAssetsInput.aim)
         {
             _aimVirtualCamera.gameObject.SetActive(true);
             thirdPersonController.SetSensivity(_aimSensitivity);
             thirdPersonController.SetRotateOnMove(false);
 
-            Vector3 worldAimTarget = mouseWorldPosition;
+            Vector3 worldAimTarget = GetMouseWorldPosistion();
             worldAimTarget.y = transform.position.y;
             Vector3 aimDiection = (worldAimTarget - transform.position).normalized;
             transform.forward = Vector3.Lerp(transform.forward, aimDiection, Time.deltaTime * 20f);
@@ -48,10 +60,7 @@ public class PlayerAimCtrl : MonoBehaviour
             thirdPersonController.SetSensivity(_normalSensitivity);
             thirdPersonController.SetRotateOnMove(true);
         }
-
-        
     }
-
     public void Test(Input value)
     {
         

@@ -31,6 +31,7 @@ public class BulletRaycaster : MonoBehaviour
         //if (victim != null)
         //{
         //    victim.TakeDamage(_damage);
+
         //}
     }
 }

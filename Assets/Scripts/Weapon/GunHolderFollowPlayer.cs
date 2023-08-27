@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GunHolderFollowPlayer : MonoBehaviour
 {
@@ -14,7 +15,11 @@ public class GunHolderFollowPlayer : MonoBehaviour
 
     [SerializeField] private float _amplitude;
     [SerializeField] private float _frequency = 1f;
+
+
+    [SerializeField] private InputActionReference _shootAction;
     private float DistanceToPlayer => Vector3.Distance(transform.position, _targetFollow.position);
+    private bool IsShootButtonPressed() => _shootAction.action.ReadValue<float>() != 0;
     void Start()
     {
         
@@ -26,16 +31,31 @@ public class GunHolderFollowPlayer : MonoBehaviour
     void Update()
     {
 
-        transform.LookAt(_aimPosition.GetMouseWorldPosistion());
+        //transform.LookAt(_aimPosition.GetMouseWorldPosistion());
         //transform.forward = _targetFollow.forward;
        
         if(DistanceToPlayer > _minDistance)
         {
             FollowPlayer();
         }
-        Hovering();
+        Hovering(); // lo lung
+        UpdateGunRotate(); // xoay dung theo ngam
     }
-
+    private void UpdateGunRotate()
+    {
+        if (IsShootButtonPressed())
+        {
+            //transform.LookAt(_aimPosition.GetMouseWorldPosistion());
+            Vector3 dir = _aimPosition.GetMouseWorldPosistion() - transform.position;
+            Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5f);
+            transform.rotation = nextRotation;
+        }
+        else
+        {
+            Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_targetFollow.forward), Time.deltaTime * 5f);
+            transform.rotation = nextRotation;
+        }
+    }
     private void Hovering()
     {
         float y = Mathf.Cos(Time.time * _frequency) * _amplitude + transform.position.y;

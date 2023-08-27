@@ -250,6 +250,9 @@ MonoBehaviour:
   - {fileID: 327320949}
   _radius: 0.5
   _angle: 10
+  pathType: 1
+  waypoints:
+  - {x: 0, y: 0, z: 0}
 --- !u!1 &140210552
 GameObject:
   m_ObjectHideFlags: 0

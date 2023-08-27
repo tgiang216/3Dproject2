@@ -22,14 +22,16 @@ public class PlayerAimCtrl : MonoBehaviour
 
     private void Update()
     {
-        Aim();
-
-       
-
-        
+        if (starterAssetsInput.aim)
+        {
+            StartAim();
+        } else
+        {
+            StopAim();
+        }             
     }
 
-    private Vector3 GetMouseWorldPosistion()
+    public Vector3 GetMouseWorldPosistion()
     {
         Vector3 mouseWorldPosition = Vector3.zero;
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -41,28 +43,22 @@ public class PlayerAimCtrl : MonoBehaviour
         }
         return mouseWorldPosition;
     }    
-    private void Aim()
+    
+    private void StartAim()
     {
-        if (starterAssetsInput.aim)
-        {
-            _aimVirtualCamera.gameObject.SetActive(true);
-            thirdPersonController.SetSensivity(_aimSensitivity);
-            thirdPersonController.SetRotateOnMove(false);
+        _aimVirtualCamera.gameObject.SetActive(true);
+        thirdPersonController.SetSensivity(_aimSensitivity);
+        thirdPersonController.SetRotateOnMove(false);
 
-            Vector3 worldAimTarget = GetMouseWorldPosistion();
-            worldAimTarget.y = transform.position.y;
-            Vector3 aimDiection = (worldAimTarget - transform.position).normalized;
-            transform.forward = Vector3.Lerp(transform.forward, aimDiection, Time.deltaTime * 20f);
-        }
-        else
-        {
-            _aimVirtualCamera.gameObject.SetActive(false);
-            thirdPersonController.SetSensivity(_normalSensitivity);
-            thirdPersonController.SetRotateOnMove(true);
-        }
+        Vector3 worldAimTarget = GetMouseWorldPosistion();
+        worldAimTarget.y = transform.position.y;
+        Vector3 aimDiection = (worldAimTarget - transform.position).normalized;
+        transform.forward = Vector3.Lerp(transform.forward, aimDiection, Time.deltaTime * 20f);
     }
-    public void Test(Input value)
+    private void StopAim()
     {
-        
+        _aimVirtualCamera.gameObject.SetActive(false);
+        thirdPersonController.SetSensivity(_normalSensitivity);
+        thirdPersonController.SetRotateOnMove(true);
     }
 }

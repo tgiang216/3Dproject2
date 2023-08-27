@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class GunHolderFollowPlayer : MonoBehaviour
 {
-    [SerializeField] private Transform _player;
-    [SerializeField] private float _minDistance;
+    [SerializeField] private Transform _targetFollow;
+    [ SerializeField] private float _minDistance;
     [SerializeField] private float _maxDistance;
     [SerializeField] private float _smooth;
     [SerializeField] private Vector3 _offset;
 
-    [SerializeField] private Vector3 _aimDirection;
+    [SerializeField] private PlayerAimCtrl _aimPosition;
 
     [SerializeField] private float _amplitude;
     [SerializeField] private float _frequency = 1f;
-    private float DistanceToPlayer => Vector3.Distance(transform.position, _player.position);
+    private float DistanceToPlayer => Vector3.Distance(transform.position, _targetFollow.position);
     void Start()
     {
         
@@ -26,8 +26,8 @@ public class GunHolderFollowPlayer : MonoBehaviour
     void Update()
     {
 
-        //transform.LookAt(_player.position);
-        transform.forward = _player.forward;
+        transform.LookAt(_aimPosition.GetMouseWorldPosistion());
+        //transform.forward = _targetFollow.forward;
        
         if(DistanceToPlayer > _minDistance)
         {
@@ -43,7 +43,7 @@ public class GunHolderFollowPlayer : MonoBehaviour
     }
     private void FollowPlayer()
     {
-        Vector3 target = new Vector3(_player.position.x, transform.position.y, _player.position.z) + _offset;
+        Vector3 target = _targetFollow.position + _offset;
         //this.transform.position = transform.Tr(transform.position, target, _speed * Time.deltaTime);
         //transform.position = Vector3.Lerp(transform.position, target, _speed * Time.deltaTime);
         Vector3 velocity = Vector3.zero;

@@ -11,7 +11,7 @@ public class PlayerAimCtrl : MonoBehaviour
     [SerializeField] private float _normalSensitivity;
     [SerializeField] private float _aimSensitivity;
     [SerializeField] private LayerMask _aimlayerMask = new LayerMask();
-    [SerializeField] private Transform debugTransform;
+    //[SerializeField] private Transform debugTransform;
     private StarterAssetsInputs starterAssetsInput;
     private ThirdPersonController thirdPersonController;
     private void Awake()
@@ -38,7 +38,7 @@ public class PlayerAimCtrl : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, _aimlayerMask))
         {
-            debugTransform.position = raycastHit.point;
+            //debugTransform.position = raycastHit.point;
             mouseWorldPosition = raycastHit.point;
         }
         return mouseWorldPosition;

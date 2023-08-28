@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEditor;
 
 public class GunListMoveCtrl : MonoBehaviour
 {
@@ -11,17 +12,14 @@ public class GunListMoveCtrl : MonoBehaviour
     [SerializeField] private float _angle;
 
     [SerializeField] PathType pathType = PathType.CatmullRom;
-    [SerializeField] Vector3[] waypoints = new[] {
-		new Vector3(4, 2, 0),
-		new Vector3(8, 6, 14),
-		new Vector3(4, 6, 14),
-		new Vector3(0, 6, 6),
-		new Vector3(-3, 0, 0)
-
-    }; 
+    [SerializeField] Vector3[] waypoints;
     private void Start()
     {
-        MoveAround(guns[1].transform, 1f);
+        //MoveAround(guns[0].transform, 1f);
+        for (int i = 0; i < guns.Length; i++)
+        {
+            
+        }
     }
     private Vector3 GetPositionOnCircle(float radius, float angle)
     {
@@ -31,10 +29,27 @@ public class GunListMoveCtrl : MonoBehaviour
 
     private void MoveAround(Transform target, float radius)
     {
-        Tween t = target.DOPath(waypoints, 4, pathType)
-            .SetOptions(true)
-            .SetLookAt(0.001f);
+        Tween t = target.DOPath(waypoints, 7, pathType)
+            .SetOptions(true);
+            
         // Then set the ease to Linear and use infinite loops
         t.SetEase(Ease.Linear).SetLoops(-1);
+    }
+
+    private Transform[] GetCirclePathList(float radius, int listLength, Vector3 center)
+    {
+        Transform[] transforms = new Transform[listLength];
+
+        return transforms;
+    }
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < waypoints.Length; i++)
+        {
+            Handles.Label(waypoints[i], i.ToString());
+            Gizmos.color = Color.green;
+            //Gizmos.DrawSphere(waypoints[i], 0.2f);
+        }
     }
 }

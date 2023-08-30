@@ -18,6 +18,17 @@ public class BulletRaycaster : MonoBehaviour
         }
     }
 
+    public void ShortGun_BulletShot()
+    {
+        Vector3 bulletRay = _aimingCamera.forward + new Vector3(0.1f, 0.1f, 0);
+        var aimingRay = new Ray(_aimingCamera.position, bulletRay);
+        if (Physics.Raycast(aimingRay, out RaycastHit hitInfo))
+        {
+            CreateHitEffect(hitInfo);
+            DeliverDamage(hitInfo.collider);
+        }
+    }
+
     private void CreateHitEffect(RaycastHit hitInfo)
     {
         Quaternion rotation = Quaternion.LookRotation(hitInfo.normal);

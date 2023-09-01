@@ -4,39 +4,25 @@ using UnityEngine;
 
 public class BulletRaycaster : MonoBehaviour
 {
-    [SerializeField] private Transform _aimingCamera;
-    [SerializeField] private GameObject _hitMarkerPrefab;
-    [SerializeField] private int _damage;
+    [SerializeField] protected Transform _aimingCamera;
+    [SerializeField] protected GameObject _hitMarkerPrefab;
+    [SerializeField] protected int _damage;
 
-    public void AutomaticRifle_BulletShot()
+    public virtual void BulletShot()
     {
-        var aimingRay = new Ray(_aimingCamera.position, _aimingCamera.forward);
-        if (Physics.Raycast(aimingRay, out RaycastHit hitInfo))
-        {
-            CreateHitEffect(hitInfo);
-            DeliverDamage(hitInfo.collider);
-        }
+        
     }
 
-    public void ShortGun_BulletShot()
-    {
-        Vector3 bulletRay = _aimingCamera.forward + new Vector3(0.1f, 0.1f, 0);
-        var aimingRay = new Ray(_aimingCamera.position, bulletRay);
-        if (Physics.Raycast(aimingRay, out RaycastHit hitInfo))
-        {
-            CreateHitEffect(hitInfo);
-            DeliverDamage(hitInfo.collider);
-        }
-    }
+    
 
-    private void CreateHitEffect(RaycastHit hitInfo)
+    protected void CreateHitEffect(RaycastHit hitInfo)
     {
         Quaternion rotation = Quaternion.LookRotation(hitInfo.normal);
         GameObject effect = Instantiate(_hitMarkerPrefab, hitInfo.point, rotation);
         effect.transform.SetParent(hitInfo.collider.transform);
     }
 
-    private void DeliverDamage(Collider collider)
+    protected void DeliverDamage(Collider collider)
     {
         //Health victim = collider.GetComponentInParent<Health>();
         //if (victim != null)

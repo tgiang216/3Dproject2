@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class AutomaticRifle : MonoBehaviour
+public class GunAutomaticRifle : MonoBehaviour
 {
     [SerializeField] private InputActionReference _shootAction;
     [SerializeField] private float _cooldownDuration;

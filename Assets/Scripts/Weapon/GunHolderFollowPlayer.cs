@@ -12,6 +12,7 @@ public class GunHolderFollowPlayer : MonoBehaviour
     [SerializeField] private Vector3 _offset;
 
     [SerializeField] private PlayerAimCtrl _aimPosition;
+    [SerializeField] private bool _isTargetInAim;
 
     [SerializeField] private float _amplitude;
     [SerializeField] private float _frequency = 1f;
@@ -48,12 +49,13 @@ public class GunHolderFollowPlayer : MonoBehaviour
             //transform.LookAt(_aimPosition.GetMouseWorldPosistion());
             Vector3 dir = _aimPosition.GetMouseWorldPosistion() - transform.position;
             Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 5f);
-            transform.rotation = nextRotation;
+            transform.rotation = nextRotation;            
         }
         else
         {
             Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_targetFollow.forward), Time.deltaTime * 5f);
             transform.rotation = nextRotation;
+            _isTargetInAim = false;
         }
     }
     private void Hovering()

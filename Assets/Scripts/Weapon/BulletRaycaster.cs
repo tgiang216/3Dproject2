@@ -6,7 +6,7 @@ public class BulletRaycaster : MonoBehaviour
 {
     [SerializeField] protected Transform _aimingCamera;
     [SerializeField] protected GameObject _hitMarkerPrefab;
-    [SerializeField] protected int _damage;
+    [SerializeField] protected float _damage;
 
     public virtual void BulletShot()
     {
@@ -24,11 +24,11 @@ public class BulletRaycaster : MonoBehaviour
 
     protected void DeliverDamage(Collider collider)
     {
-        //Health victim = collider.GetComponentInParent<Health>();
-        //if (victim != null)
-        //{
-        //    victim.TakeDamage(_damage);
-
-        //}
+        Health victim = collider.GetComponentInParent<Health>();
+        if (victim != null)
+        {
+            victim.TakeDamage(_damage);
+            Debug.Log("Take damage " + _damage);
+        }
     }
 }

@@ -6,6 +6,7 @@ public class GunAutomaticRifle : MonoBehaviour
 {
     [SerializeField] private InputActionReference _shootAction;
     [SerializeField] private float _cooldownDuration;
+    [SerializeField] private bool _canShoot;
 
     public UnityEvent BulletShot;
 

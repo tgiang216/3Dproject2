@@ -33,5 +33,9 @@ public class AiAgent : MonoBehaviour
         stateMachine.Update();
         animator.SetFloat("Speed", navMeshAgent.speed);
     }
-    
+
+    public void OnDieEvent()
+    {
+        
+    }
 }

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: ChaseConfig
   m_EditorClassIdentifier: 
   maxTime: 1
-  maxDistance: 1
+  maxDistance: 3
+  dieForce: 10

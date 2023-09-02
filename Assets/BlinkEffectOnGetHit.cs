@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class BlinkEffectOnGetHit : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private SkinnedMeshRenderer _skinnedMesh;
+    [SerializeField] private float _blinkIntensity;
+    [SerializeField] private float _blinkDuration;
+    float _blinkTimer;
     void Start()
     {
         
@@ -14,5 +17,13 @@ public class BlinkEffectOnGetHit : MonoBehaviour
     void Update()
     {
         
+    }
+    private void BlinkEffect()
+    {
+        if (_blinkTimer <= 0) return;
+        _blinkTimer -= Time.deltaTime;
+        float lerp = Mathf.Clamp01(_blinkTimer / _blinkDuration);
+        float intesity = lerp * _blinkIntensity + 1f;
+        _skinnedMesh.material.color = Color.white * intesity;
     }
 }

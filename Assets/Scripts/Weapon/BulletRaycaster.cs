@@ -22,12 +22,13 @@ public class BulletRaycaster : MonoBehaviour
         effect.transform.SetParent(hitInfo.collider.transform);
     }
 
-    protected void DeliverDamage(Collider collider)
+    protected void DeliverDamage(RaycastHit hitInfo)
     {
-        Health victim = collider.GetComponentInParent<Health>();
+        Health victim = hitInfo.collider.GetComponentInParent<Health>();
         if (victim != null)
         {
-            victim.TakeDamage(_damage);
+            Vector3 hitDirection = transform.position - hitInfo.point;
+            victim.TakeDamage(_damage, hitDirection);
             Debug.Log("Take damage " + _damage);
         }
     }

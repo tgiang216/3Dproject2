@@ -10,7 +10,7 @@ public class BulletOneRayCast : BulletRaycaster
         if (Physics.Raycast(aimingRay, out RaycastHit hitInfo))
         {
             CreateHitEffect(hitInfo);
-            DeliverDamage(hitInfo.collider);
+            DeliverDamage(hitInfo);
         }
     }
 }

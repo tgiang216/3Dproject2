@@ -16,6 +16,7 @@ public class ChasePlayerState : State
         {
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
+        
     }
     public void Update(AiAgent agent)
     {

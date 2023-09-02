@@ -9,11 +9,21 @@ public class AiAgent : MonoBehaviour
     public StateId initialState;
     public NavMeshAgent navMeshAgent;
     public AiAgentConfig config;
+    public Animator animator;
+
+    public Ragdoll ragdoll;
+    public SkinnedMeshRenderer mesh;
+
+
     void Start()
     {
+        ragdoll= GetComponent<Ragdoll>();
+        mesh= GetComponent<SkinnedMeshRenderer>();
+        animator= GetComponent<Animator>();
         navMeshAgent= GetComponent<NavMeshAgent>();
         stateMachine = new StateMachine(this);
         stateMachine.RegisterState(new ChasePlayerState());
+        stateMachine.RegisterState(new DeathState());
         stateMachine.ChangeState(initialState);
     }
 
@@ -21,6 +31,7 @@ public class AiAgent : MonoBehaviour
     public void Update()
     {
         stateMachine.Update();
+        animator.SetFloat("Speed", navMeshAgent.speed);
     }
     
 }

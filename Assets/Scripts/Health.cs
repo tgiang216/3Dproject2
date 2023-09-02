@@ -16,7 +16,7 @@ public class Health : MonoBehaviour
 
     float _blinkTimer;
     public UnityEvent<float> DamageTaken;
-    public UnityEvent Dead;
+    public UnityEvent<Vector3> Dead;
     public UnityEvent<float, float> HpChanged;
     public bool IsDead => HealthPoint <= 0;
 
@@ -39,13 +39,13 @@ public class Health : MonoBehaviour
     {
        
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 direction)
     {
         
         HealthPoint -= damage;
         if(IsDead)
         {
-            Dead.Invoke();
+            Dead.Invoke(direction);
         }
         
     }

@@ -2,20 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathState : State
+public class IdleState : State
 {
-    public StateId GetId()
-    {
-        return StateId.Death;
-    }
     public void Enter(AiAgent agent)
-    {       
-        agent.ragdoll.EnableRagdoll();       
+    {
+        
     }
 
     public void Exit(AiAgent agent)
     {
         
+    }
+
+    public StateId GetId()
+    {
+        return StateId.Idle;
     }
 
     public void Update(AiAgent agent)

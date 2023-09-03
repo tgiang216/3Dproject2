@@ -24,6 +24,7 @@ public class AiAgent : MonoBehaviour
         stateMachine = new StateMachine(this);
         stateMachine.RegisterState(new ChasePlayerState());
         stateMachine.RegisterState(new DeathState());
+        stateMachine.RegisterState(new IdleState());
         stateMachine.ChangeState(initialState);
     }
 
@@ -36,6 +37,6 @@ public class AiAgent : MonoBehaviour
 
     public void OnDieEvent()
     {
-        
+        stateMachine.ChangeState(StateId.Death);
     }
 }

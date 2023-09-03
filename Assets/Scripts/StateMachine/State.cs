@@ -5,7 +5,8 @@ using UnityEngine;
 public enum StateId
 {
     ChasePlayer,
-    Death
+    Death,
+    Idle
 }
 public interface State
 {

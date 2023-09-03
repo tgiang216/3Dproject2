@@ -40,7 +40,7 @@ public class GunHolderFollowPlayer : MonoBehaviour
             FollowPlayer();
         }
         Hovering(); // lo lung
-        UpdateGunRotate(); // xoay dung theo ngam
+        //UpdateGunRotate(); // xoay dung theo ngam
     }
     private void UpdateGunRotate()
     {

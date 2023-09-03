@@ -6,6 +6,7 @@ public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody[] _rigids;
+    [SerializeField] private float hitForce;
 
     private void Start()
     {
@@ -32,9 +33,11 @@ public class Ragdoll : MonoBehaviour
         _animator.enabled = !isEnable;
     }
 
-    public void ApplyForce(Vector3 force)
+    public void ApplyForce(Vector3 hitDirection)
     {
         var rigidBody = _animator.GetBoneTransform(HumanBodyBones.Hips).GetComponent<Rigidbody>();
-        rigidBody.AddForce(force,ForceMode.VelocityChange);
+        rigidBody.AddForce(hitDirection * hitForce,ForceMode.VelocityChange);
+        
+        //Debug.Log("vang vang " + hitDirection);
     }
 }

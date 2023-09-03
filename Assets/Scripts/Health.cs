@@ -48,7 +48,5 @@ public class Health : MonoBehaviour
             Dead.Invoke(direction);
         }
         
-    }
-
-    
+    }    
 }

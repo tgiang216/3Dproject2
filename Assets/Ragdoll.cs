@@ -32,7 +32,17 @@ public class Ragdoll : MonoBehaviour
         }
         _animator.enabled = !isEnable;
     }
+    public void StopRagdoll()
+    {
+        StartCoroutine(StopRagdollInTime(1f));
+    }
 
+    public IEnumerator StopRagdollInTime(float time)
+    {
+        SetRagdoll(true);
+        yield return new WaitForSeconds(time);
+        SetRagdoll(false);
+    }
     public void ApplyForce(Vector3 hitDirection)
     {
         var rigidBody = _animator.GetBoneTransform(HumanBodyBones.Hips).GetComponent<Rigidbody>();

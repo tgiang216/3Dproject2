@@ -7,6 +7,8 @@ public class BulletRaycaster : MonoBehaviour
     [SerializeField] protected Transform _aimingCamera;
     [SerializeField] protected GameObject _hitMarkerPrefab;
     [SerializeField] protected float _damage;
+    [SerializeField] protected LayerMask _hitLayerMask;
+
 
     public virtual void BulletShot()
     {
@@ -29,6 +31,7 @@ public class BulletRaycaster : MonoBehaviour
         {
             Vector3 hitDirection = (hitInfo.point - transform.position).normalized;
             victim.TakeDamage(_damage, hitDirection);
+            hitInfo.rigidbody.AddForce(hitDirection*50f);
             hitInfo.transform.SendMessage("HitByRay",null,SendMessageOptions.DontRequireReceiver);
             Debug.Log("Take damage " + _damage);
         }

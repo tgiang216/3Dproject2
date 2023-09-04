@@ -43,7 +43,8 @@ public class Health : MonoBehaviour
     {
         
         HealthPoint -= damage;
-        if(IsDead)
+        DamageTaken.Invoke(damage);
+        if (IsDead)
         {
             Dead.Invoke(direction);
         }

@@ -7,8 +7,10 @@ public class GunRotateCtrl : MonoBehaviour
 {
     [SerializeField] private PlayerAimCtrl _aimPosition;
     [SerializeField] private InputActionReference _shootAction;
+    [SerializeField] private InputActionReference _aimAction;
     [SerializeField] private Transform _targetFollow;
     private bool IsShootButtonPressed() => _shootAction.action.ReadValue<float>() != 0;
+    private bool IsAimButtonPressed() => _aimAction.action.ReadValue<float>() != 0;
 
     // Update is called once per frame
     private void Start()
@@ -23,7 +25,7 @@ public class GunRotateCtrl : MonoBehaviour
 
     private void UpdateGunRotate()
     {
-        if (IsShootButtonPressed())
+        if (IsShootButtonPressed() || IsAimButtonPressed())
         {
             //transform.LookAt(_aimPosition.GetMouseWorldPosistion());
             Vector3 dir = _aimPosition.GetMouseWorldPosistion() - transform.position;

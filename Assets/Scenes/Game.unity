@@ -1557,6 +1557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 238675097}
   - component: {fileID: 238675096}
+  - component: {fileID: 238675098}
   m_Layer: 0
   m_Name: RigLayer_Head
   m_TagString: Untagged
@@ -1604,6 +1605,18 @@ Transform:
   m_Father: {fileID: 1169852633}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &238675098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 238675095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8edb3632a45dc5a4585a701a237d69d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &243366722
 GameObject:
   m_ObjectHideFlags: 0
@@ -4486,7 +4499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &676187342
 GameObject:
   m_ObjectHideFlags: 0
@@ -6943,7 +6956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1095349739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10351,7 +10364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1764687241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15111,12 +15124,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Character1_RightShoulder'\n\tTransform 'Character1_Head'\n\tTransform
-    'Character1_Neck'\n\tTransform 'Character1_Hips'\n\tTransform 'Character1_RightArm'\n\tTransform
-    'Character1_Spine'\n\tTransform 'Character1_RightShoulder'\n\tTransform 'Character1_Head'\n\tTransform
-    'Character1_Neck'\n\tTransform 'Character1_Hips'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -15235,12 +15243,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49088846bb1dc9c4aa28f7c54c57b945, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealthPoint: 50
+  MaxHealthPoint: 200
   _healthPoint: 0
   _takeDamageAction: {fileID: 0}
   DamageTaken:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7537417665922494959}
+        m_TargetAssemblyTypeName: AiAgent, Assembly-CSharp
+        m_MethodName: OnTakeDamageEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   Dead:
     m_PersistentCalls:
       m_Calls:
@@ -15337,6 +15357,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   ragdoll: {fileID: 0}
   mesh: {fileID: 0}
+  defaultRate: 20
 --- !u!1 &7569792997171314669
 GameObject:
   m_ObjectHideFlags: 0

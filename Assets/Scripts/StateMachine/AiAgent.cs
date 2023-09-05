@@ -14,6 +14,8 @@ public class AiAgent : MonoBehaviour
     public Ragdoll ragdoll;
     public SkinnedMeshRenderer mesh;
 
+    private float getHitAnimRate;
+    public float defaultRate = 20f;
 
     void Start()
     {
@@ -26,6 +28,8 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new DeathState());
         stateMachine.RegisterState(new IdleState());
         stateMachine.ChangeState(initialState);
+
+        getHitAnimRate = defaultRate;
     }
 
     // Update is called once per frame
@@ -38,5 +42,20 @@ public class AiAgent : MonoBehaviour
     public void OnDieEvent()
     {
         stateMachine.ChangeState(StateId.Death);
+    }
+    public void OnTakeDamageEvent(float damage)
+    {
+        Debug.Log("Take damage " + damage);
+        
+        float rate = Random.Range(0f, 100f);
+        if(rate < getHitAnimRate)
+        {
+            animator.SetTrigger("GetHit");
+            getHitAnimRate = defaultRate;
+        }
+        else
+        {
+            getHitAnimRate++;
+        }
     }
 }

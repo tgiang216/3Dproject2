@@ -33,7 +33,7 @@ public class BulletRaycaster : MonoBehaviour
             victim.TakeDamage(_damage, hitDirection);
             hitInfo.rigidbody.AddForce(hitDirection*50f);
             hitInfo.transform.SendMessage("HitByRay",null,SendMessageOptions.DontRequireReceiver);
-            Debug.Log("Take damage " + _damage);
+            //Debug.Log("Take damage " + _damage);
         }
     }
 }

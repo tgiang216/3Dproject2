@@ -6,7 +6,8 @@ public enum StateId
 {
     ChasePlayer,
     Death,
-    Idle
+    Idle,
+    GetHit
 }
 public interface State
 {

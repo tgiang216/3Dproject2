@@ -47,7 +47,7 @@ public class GunListMoveCtrl : MonoBehaviour
     {
         for (int i = 0; i < waypoints.Length; i++)
         {
-            Handles.Label(waypoints[i], i.ToString());
+            //Handles.Label(waypoints[i], i.ToString());
             Gizmos.color = Color.green;
             //Gizmos.DrawSphere(waypoints[i], 0.2f);
         }

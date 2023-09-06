@@ -50,7 +50,7 @@ public class AiAgent : MonoBehaviour
         float rate = Random.Range(0f, 100f);
         if(rate < getHitAnimRate)
         {
-            animator.SetTrigger("GetHit");
+            animator.SetTrigger("FallFont");
             getHitAnimRate = defaultRate;
         }
         else

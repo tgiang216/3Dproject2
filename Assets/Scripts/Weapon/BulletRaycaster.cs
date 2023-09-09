@@ -29,9 +29,11 @@ public class BulletRaycaster : MonoBehaviour
         Health victim = hitInfo.collider.GetComponentInParent<Health>();
         if (victim != null)
         {
-            Vector3 hitDirection = (hitInfo.point - transform.position).normalized;
+            Vector3 hitDirection = (hitInfo.point - transform.position);
+            hitDirection.Normalize();
+            //Debug.Log("Hit direction 1" + hitDirection);
             victim.TakeDamage(_damage, hitDirection, hitInfo.point);
-            hitInfo.rigidbody.AddForce(hitDirection*50f);
+            //hitInfo.rigidbody.AddForce(hitDirection*50f);
             hitInfo.transform.SendMessage("HitByRay",null,SendMessageOptions.DontRequireReceiver);
             //Debug.Log("Take damage " + _damage);
         }

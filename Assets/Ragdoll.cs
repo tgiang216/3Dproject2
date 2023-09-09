@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
+    [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private Rigidbody[] _rigids;
     [SerializeField] private float _hitForce;
  
@@ -13,6 +15,7 @@ public class Ragdoll : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
+        _navMeshAgent = GetComponent<NavMeshAgent>();
         CollectBones();
         DisableRagdoll();
     }
@@ -43,6 +46,7 @@ public class Ragdoll : MonoBehaviour
         }
         //Debug.Log("Set ragdoll " + isEnable);
         _animator.enabled = !isEnable;
+        _navMeshAgent.enabled= !isEnable;
     }
       
     public Rigidbody GetRigitbody(Vector3 position)

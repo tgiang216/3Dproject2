@@ -25,18 +25,22 @@ public class GunRotateCtrl : MonoBehaviour
 
     private void UpdateGunRotate()
     {
-        if (IsShootButtonPressed() || IsAimButtonPressed())
-        {
-            //transform.LookAt(_aimPosition.GetMouseWorldPosistion());
-            Vector3 dir = _aimPosition.GetMouseWorldPosistion() - transform.position;
-            Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
-            transform.rotation = nextRotation;
-        }
-        else
-        {
-            Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_targetFollow.forward), Time.deltaTime * 5f);
-            transform.rotation = nextRotation;
+        Vector3 dir = _aimPosition.GetMouseWorldPosistion() - transform.position;
+        Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+        transform.rotation = nextRotation;
+
+        //if (IsShootButtonPressed() || IsAimButtonPressed())
+        //{
+        //    //transform.LookAt(_aimPosition.GetMouseWorldPosistion());
+        //    Vector3 dir = _aimPosition.GetMouseWorldPosistion() - transform.position;
+        //    Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+        //    transform.rotation = nextRotation;
+        //}
+        //else
+        //{
+        //    Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(_targetFollow.forward), Time.deltaTime * 5f);
+        //    transform.rotation = nextRotation;
           
-        }
+        
     }
 }

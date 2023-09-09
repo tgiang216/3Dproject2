@@ -12,7 +12,7 @@ public class ZombieHeadShot : MonoBehaviour
 
     public void HitByRay()
     {
-        health.TakeDamage(_addDamage, Vector3.zero);
+        health.TakeDamage(_addDamage, Vector3.zero, Vector3.zero);
         if (health.IsDead)
         {
             _headModel.SetActive(false);

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Rigidbody[] _rigids;
-    [SerializeField] private float hitForce;
+    [SerializeField] private float _hitForce;
+ 
 
     private void Start()
     {
@@ -19,35 +21,33 @@ public class Ragdoll : MonoBehaviour
     private void CollectBones() => _rigids = GetComponentsInChildren<Rigidbody>();
 
     [ContextMenu("Enable ragdoll")]
-    public void EnableRagdoll() => SetRagdoll(true);
+    public void EnableRagdoll()
+    {
+        
+        SetRagdoll(true);
+    }
 
     [ContextMenu("Disable ragdoll")]
-    public void DisableRagdoll() => SetRagdoll(false);
+    public void DisableRagdoll()
+    {
+        //_agent.UpdatePositionToHipsBone();
+        SetRagdoll(false);
+    }
 
     private void SetRagdoll(bool isEnable)
     {
+
         foreach (var rigid in _rigids)
         {
             rigid.isKinematic = !isEnable;
         }
+        //Debug.Log("Set ragdoll " + isEnable);
         _animator.enabled = !isEnable;
     }
-    public void StopRagdoll()
+      
+    public Rigidbody GetRigitbody(Vector3 position)
     {
-        StartCoroutine(StopRagdollInTime(1f));
-    }
-
-    public IEnumerator StopRagdollInTime(float time)
-    {
-        SetRagdoll(true);
-        yield return new WaitForSeconds(time);
-        SetRagdoll(false);
-    }
-    public void ApplyForce(Vector3 hitDirection)
-    {
-        var rigidBody = _animator.GetBoneTransform(HumanBodyBones.Hips).GetComponent<Rigidbody>();
-        rigidBody.AddForce(hitDirection * hitForce,ForceMode.VelocityChange);
-        
-        //Debug.Log("vang vang " + hitDirection);
+        Rigidbody rigidbody = _rigids.OrderBy(rigidbody=> Vector3.Distance(rigidbody.position, position)).First();
+        return rigidbody;
     }
 }

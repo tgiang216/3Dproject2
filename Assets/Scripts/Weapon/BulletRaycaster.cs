@@ -30,7 +30,7 @@ public class BulletRaycaster : MonoBehaviour
         if (victim != null)
         {
             Vector3 hitDirection = (hitInfo.point - transform.position).normalized;
-            victim.TakeDamage(_damage, hitDirection);
+            victim.TakeDamage(_damage, hitDirection, hitInfo.point);
             hitInfo.rigidbody.AddForce(hitDirection*50f);
             hitInfo.transform.SendMessage("HitByRay",null,SendMessageOptions.DontRequireReceiver);
             //Debug.Log("Take damage " + _damage);

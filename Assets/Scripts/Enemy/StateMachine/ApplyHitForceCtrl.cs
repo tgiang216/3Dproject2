@@ -21,7 +21,7 @@ public class ApplyHitForceCtrl : MonoBehaviour
         //Vector3 upDirection = Vector3.up * _upForce;
         hitDirection.y = 1;
         hitDirection.Normalize();
-        Debug.Log("hit direction" + hitDirection);
+       //Debug.Log("hit direction" + hitDirection);
         rigidbody.AddForceAtPosition(hitDirection * _hitForce, hitPosition, ForceMode.Impulse);
         //rigidbody.AddForce(forceFirection * _hitForce, ForceMode.VelocityChange);
 

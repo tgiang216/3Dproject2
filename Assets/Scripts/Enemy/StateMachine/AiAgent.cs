@@ -23,7 +23,7 @@ public class AiAgent : MonoBehaviour
     private Transform playerTransform;
 
     private bool IsDead = false;
-    private bool Can = false;
+    [SerializeField] private StateId currentState;
 
     public bool IsPlayerInRange => Vector3.Distance(playerTransform.position, transform.position) < maxRangeToPlayer;
     void Start()
@@ -50,6 +50,7 @@ public class AiAgent : MonoBehaviour
     public void Update()
     {   
         stateMachine.Update();
+        currentState = stateMachine.currentState;
         //animator.SetFloat("Speed", navMeshAgent.speed);
         CountDamageInTime();
         DetectPlayer();
@@ -86,17 +87,15 @@ public class AiAgent : MonoBehaviour
     }
      private void DetectPlayer()
     {
-        if (stateMachine.currentState == StateId.Ragdoll) return;
-        if (stateMachine.currentState == StateId.StandUp) return;
-        if (stateMachine.currentState == StateId.Death) return;
+        if ((int)stateMachine.currentState == (int)StateId.Ragdoll) return;
+        if ((int)stateMachine.currentState == (int)StateId.StandUp) return;
+        if ((int)stateMachine.currentState == (int)StateId.Death) return;
+        if ((int)stateMachine.currentState == (int)StateId.ChasePlayer) return;
         
         
         if (IsPlayerInRange)
         {
             stateMachine.ChangeState(StateId.ChasePlayer);
-        }else
-        {
-            stateMachine.ChangeState(StateId.Walk);
         }
     }
      public float CountDamageInTime()
@@ -114,16 +113,17 @@ public class AiAgent : MonoBehaviour
         return totalDamageInSecond;
     }
 
-
+    [SerializeField] private LayerMask mask;
     public void UpdatePositionToHipsBone()
     {
         Vector3 originalPos = transform.position;
         transform.position = hipsBoneTranform.position;
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo,100f, mask))
         {
-            transform.position = new Vector3(transform.position.x, hitInfo.point.y, transform.position.z);
+            Vector3 newPos = new Vector3(transform.position.x, hitInfo.point.y, transform.position.z);
+            transform.position = newPos;
+            //Debug.Log("Position " + newPos + "Hit point " );
         }
-
         hipsBoneTranform.position = originalPos;
     }
     

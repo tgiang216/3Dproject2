@@ -31,9 +31,14 @@ public class StateMachine
     }
     public void ChangeState(StateId newState)
     {
-        if (newState == currentState) return;
+        //Debug.LogWarning("Current State "+ currentState + " ------- " + "New State : "+ newState);
+        if ((int)currentState!= (int)StateId.Ragdoll && (int)newState == (int)currentState) return;
+        //Debug.LogWarning("");
         GetState(currentState)?.Exit(agent);
-        currentState= newState;
+        //Debug.LogWarning("Current State " + currentState + " Change to " + "New State : " + newState);
+        currentState = newState;
         GetState(currentState)?.Enter(agent);
+        
+
     }
 }

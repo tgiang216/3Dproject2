@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class ChasePlayerState : State
 {
     public Transform playerTransform;
-    
+    private float chasingSpeed;
     private float timer = 0f;
     public StateId GetId()
     {
@@ -12,9 +12,11 @@ public class ChasePlayerState : State
     }
     public void Enter(AiAgent agent)
     {
-        if(playerTransform == null)
+        chasingSpeed = Random.Range(1.0f, 2.5f);
+        if (playerTransform == null)
         {
             playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            //if(playerTransform != null ) { agent.animator.SetFloat("Speed",chasingSpeed); }
         }
         
     }
@@ -28,6 +30,7 @@ public class ChasePlayerState : State
         {
             agent.navMeshAgent.destination = playerTransform.position;
         }
+        agent.navMeshAgent.speed = chasingSpeed;
         if(timer < 0f)
         {
             Vector3 direction = (playerTransform.position - agent.navMeshAgent.destination);
@@ -40,6 +43,11 @@ public class ChasePlayerState : State
                 }
             }
             timer = agent.config.maxTime;
+        }
+        agent.animator.SetFloat("Speed", agent.navMeshAgent.speed);
+        if (!agent.IsPlayerInRange)
+        {
+            agent.stateMachine.ChangeState(StateId.Walk);
         }
     }
     public void Exit(AiAgent agent)

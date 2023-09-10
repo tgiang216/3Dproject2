@@ -7,8 +7,9 @@ public class RagdollState : State
     private float standUpTime ;
     public void Enter(AiAgent agent)
     {
-        Debug.Log("Enter Standup State");
+        //Debug.Log("Enter Standup State");  
         agent.ragdoll.EnableRagdoll();
+        agent.navMeshAgent.speed = 0;
         standUpTime = Random.Range(2.0f, 5.0f);
     }
 

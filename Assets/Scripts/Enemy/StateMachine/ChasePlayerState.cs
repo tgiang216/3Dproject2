@@ -44,10 +44,14 @@ public class ChasePlayerState : State
             }
             timer = agent.config.maxTime;
         }
-        agent.animator.SetFloat("Speed", agent.navMeshAgent.speed);
-        if (!agent.IsPlayerInRange)
+        if(agent.IsPlayerInAttackRange )
         {
-            agent.stateMachine.ChangeState(StateId.Walk);
+            agent.stateMachine.ChangeState(StateId.Attack);
+        }
+        agent.animator.SetFloat("Speed", agent.navMeshAgent.speed);
+        if (!agent.IsPlayerInAttackRange)
+        {
+            //agent.stateMachine.ChangeState(StateId.Idle);
         }
     }
     public void Exit(AiAgent agent)

@@ -9,7 +9,8 @@ public enum StateId
     Idle,
     Ragdoll,
     StandUp,
-    Walk
+    Walk,
+    Attack
 }
 public interface State
 {

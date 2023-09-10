@@ -12,7 +12,7 @@ public class BulletMultiRayCast : BulletRaycaster
         {
             Vector3 offset = new Vector3(Random.Range(-_shotArea, _shotArea), Random.Range(-_shotArea, _shotArea), Random.Range(-_shotArea, _shotArea));
             var aimingRay = new Ray(_aimingCamera.position, _aimingCamera.forward + offset);
-            if (Physics.Raycast(aimingRay, out RaycastHit hitInfo, 1000f, _hitLayerMask))
+            if (Physics.Raycast(aimingRay, out RaycastHit hitInfo, Mathf.Infinity, _hitLayerMask))
             {
                 CreateHitEffect(hitInfo);
                 DeliverDamage(hitInfo);

@@ -16,7 +16,8 @@ public class AiAgent : MonoBehaviour
     public float defaultRate = 20f;
 
     
-    public float maxRangeToPlayer;
+    public float maxChaseRange;
+    public float maxAttackRange;
 
     private float getHitAnimRate;
     private Transform hipsBoneTranform;
@@ -25,7 +26,8 @@ public class AiAgent : MonoBehaviour
     private bool IsDead = false;
     [SerializeField] private StateId currentState;
 
-    public bool IsPlayerInRange => Vector3.Distance(playerTransform.position, transform.position) < maxRangeToPlayer;
+    public bool IsPlayerInChaseRange => Vector3.Distance(playerTransform.position, transform.position) <= maxChaseRange;
+    public bool IsPlayerInAttackRange => Vector3.Distance(playerTransform.position, transform.position) <= maxAttackRange;
     void Start()
     {
         ragdoll= GetComponent<Ragdoll>();
@@ -39,6 +41,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new RagdollState());
         stateMachine.RegisterState(new StandUpState());
         stateMachine.RegisterState(new WalkState());
+        stateMachine.RegisterState(new AttackState());
         stateMachine.ChangeState(initialState);
 
         getHitAnimRate = defaultRate;
@@ -53,6 +56,7 @@ public class AiAgent : MonoBehaviour
         currentState = stateMachine.currentState;
         //animator.SetFloat("Speed", navMeshAgent.speed);
         CountDamageInTime();
+        Debug.Log(IsPlayerInAttackRange);
         DetectPlayer();
 
 
@@ -91,12 +95,27 @@ public class AiAgent : MonoBehaviour
         if ((int)stateMachine.currentState == (int)StateId.StandUp) return;
         if ((int)stateMachine.currentState == (int)StateId.Death) return;
         if ((int)stateMachine.currentState == (int)StateId.ChasePlayer) return;
-        
-        
-        if (IsPlayerInRange)
+        if ((int)stateMachine.currentState == (int)StateId.Attack) return;
+
+        if (IsPlayerInAttackRange)
+        {
+            if(Vector3.Distance(transform.position, playerTransform.position)< maxAttackRange -1f)
+            {
+                stateMachine.ChangeState(StateId.Attack);
+            }
+            
+        }
+        else
+        if (IsPlayerInChaseRange)
         {
             stateMachine.ChangeState(StateId.ChasePlayer);
         }
+        else
+        {
+            stateMachine.ChangeState(StateId.Walk);
+        }
+        
+        
     }
      public float CountDamageInTime()
     {
@@ -126,5 +145,10 @@ public class AiAgent : MonoBehaviour
         }
         hipsBoneTranform.position = originalPos;
     }
-    
+    public void FaceToPlayer()
+    {
+        Vector3 dir = playerTransform.position - transform.position;
+        Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
+        transform.rotation = nextRotation;
+    }
 }

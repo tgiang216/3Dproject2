@@ -1621,7 +1621,7 @@ MonoBehaviour:
   health: {fileID: 6146397253112785254}
   _headModel: {fileID: 5120573009372771608}
   _effect: {fileID: 100002, guid: 6890a03af913b874092fbb1e8337747d, type: 3}
-  _addDamage: 30
+  _addDamage: 40
 --- !u!1 &4510438144170357464
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,7 +1651,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4510438144170357464}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 3.1848974, y: 0.899, z: 4.7810335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1675,7 +1675,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 0fcfa60dd8e78184cae565ee92c7d1c8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -1814,7 +1814,9 @@ MonoBehaviour:
   ragdoll: {fileID: 5143779311680063651}
   mesh: {fileID: 0}
   defaultRate: 20
-  maxRangeToPlayer: 20
+  maxChaseRange: 20
+  maxAttackRange: 1.5
+  currentState: 0
   mask:
     serializedVersion: 2
     m_Bits: 439

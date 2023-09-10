@@ -2,17 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : MonoBehaviour
+public class AttackState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    public void Enter(AiAgent agent)
     {
-        
+        agent.animator.SetBool("IsAttack", true);
+        agent.navMeshAgent.enabled= false;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Exit(AiAgent agent)
     {
-        
+        agent.animator.SetBool("IsAttack", false);
+        agent.navMeshAgent.enabled = true;
+    }
+
+    public StateId GetId()
+    {
+        return StateId.Attack;
+    }
+
+    public void Update(AiAgent agent)
+    {
+        if (!agent.IsPlayerInAttackRange)
+        {
+            agent.stateMachine.ChangeState(StateId.ChasePlayer);
+        }
+        agent.FaceToPlayer();
     }
 }

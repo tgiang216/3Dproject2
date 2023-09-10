@@ -32,7 +32,7 @@ public class StandUpState : State
     {
         if(agent.animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !agent.animator.IsInTransition(0))
         {
-            Debug.Log("Standing up " + agent.animator.GetCurrentAnimatorStateInfo(0));
+            //Debug.Log("Standing up " + agent.animator.GetCurrentAnimatorStateInfo(0));
             agent.stateMachine.ChangeState(StateId.Walk);
             //agent.navMeshAgent.speed = _originSpeed;
         }

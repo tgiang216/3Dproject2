@@ -8,10 +8,17 @@ public class StandUpState : State
     public void Enter(AiAgent agent)
     {
         //_originSpeed = agent.navMeshAgent.speed;
-        agent.UpdatePositionToHipsBone();
+        
         agent.ragdoll.DisableRagdoll();
         //agent.animator.Play("Face Down Stand Up");
-        agent.animator.SetTrigger("StandUp");
+        if(agent.isFacingUp)
+        {
+            agent.animator.SetTrigger("FaceUpStandUp");
+        } else
+        {
+            agent.animator.SetTrigger("FaceDownStandUp");
+        }
+        
         agent.animator.SetFloat("Speed", 0f);
         agent.navMeshAgent.enabled= false;
         //Debug.Log("Disable navMesh in Stand up");

@@ -46,6 +46,7 @@ public class PlayerAimCtrl : MonoBehaviour
     
     private void StartAim()
     {
+        if (starterAssetsInput.look == Vector2.zero) return;
         _aimVirtualCamera.gameObject.SetActive(true);
         thirdPersonController.SetSensivity(_aimSensitivity);
         thirdPersonController.SetRotateOnMove(false);

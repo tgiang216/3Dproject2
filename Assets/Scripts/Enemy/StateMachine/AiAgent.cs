@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class AiAgent : MonoBehaviour
 {
+    
+    public GameObject cube;
     public StateMachine stateMachine;
     public StateId initialState;
     public NavMeshAgent navMeshAgent;
@@ -23,17 +26,48 @@ public class AiAgent : MonoBehaviour
     private Transform hipsBoneTranform;
     private Transform playerTransform;
 
+    [Header("Reset bone before standup")]
+    public BoneTransform[] faceDownStandUpBoneTransforms;
+    public BoneTransform[] ragdollBoneTransforms;
+    public BoneTransform[] faceUpStandUpBoneTransforms;
+    public Transform[] bones;
+    public string faceDownStandUpClipName;
+    public string faceUpStandUpClipName;
+    public float timeToResetBones;
+    public bool isFacingUp => hipsBoneTranform.up.y > 0;
+
+
     private bool IsDead = false;
     [SerializeField] private StateId currentState;
 
     public bool IsPlayerInChaseRange => Vector3.Distance(playerTransform.position, transform.position) <= maxChaseRange;
     public bool IsPlayerInAttackRange => Vector3.Distance(playerTransform.position, transform.position) <= maxAttackRange;
+    private void Awake()
+    {
+        ragdoll = GetComponent<Ragdoll>();
+        mesh = GetComponent<SkinnedMeshRenderer>();
+        animator = GetComponent<Animator>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        hipsBoneTranform = animator.GetBoneTransform(HumanBodyBones.Hips);
+        bones = hipsBoneTranform.GetComponentsInChildren<Transform>();
+        faceDownStandUpBoneTransforms = new BoneTransform[bones.Length];
+        faceUpStandUpBoneTransforms = new BoneTransform[bones.Length];
+        ragdollBoneTransforms = new BoneTransform[bones.Length];
+        Debug.Log("Bones lengh " + bones.Length);
+        for (int i = 0; i < bones.Length; i++)
+        {
+            faceDownStandUpBoneTransforms[i] = new BoneTransform();
+            faceUpStandUpBoneTransforms[i] = new BoneTransform();
+            ragdollBoneTransforms[i] = new BoneTransform();
+        }
+        PopulateAnimationStartBoneTransform(faceDownStandUpClipName, faceDownStandUpBoneTransforms);
+        PopulateAnimationStartBoneTransform(faceUpStandUpClipName, faceUpStandUpBoneTransforms);
+        DrawDebug();
+    }
+
     void Start()
     {
-        ragdoll= GetComponent<Ragdoll>();
-        mesh= GetComponent<SkinnedMeshRenderer>();
-        animator= GetComponent<Animator>();
-        navMeshAgent= GetComponent<NavMeshAgent>();
+        
         stateMachine = new StateMachine(this);
         stateMachine.RegisterState(new ChasePlayerState());
         stateMachine.RegisterState(new DeathState());
@@ -45,7 +79,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.ChangeState(initialState);
 
         getHitAnimRate = defaultRate;
-        hipsBoneTranform = animator.GetBoneTransform(HumanBodyBones.Hips);
+        
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
@@ -135,8 +169,14 @@ public class AiAgent : MonoBehaviour
     [SerializeField] private LayerMask mask;
     public void UpdatePositionToHipsBone()
     {
-        Vector3 originalPos = transform.position;
+        Vector3 originalPos = hipsBoneTranform.position;
         transform.position = hipsBoneTranform.position;
+
+        Vector3 positionOffest = GetStandUpBoneTransforms()[0].Position;
+        positionOffest.y = 0;
+        positionOffest = transform.rotation*positionOffest;
+        transform.position -= positionOffest;
+
         if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo,100f, mask))
         {
             Vector3 newPos = new Vector3(transform.position.x, hitInfo.point.y, transform.position.z);
@@ -145,10 +185,87 @@ public class AiAgent : MonoBehaviour
         }
         hipsBoneTranform.position = originalPos;
     }
+    public void UpdateRotationToHipsBone()
+    {
+        Vector3 originalPosition = hipsBoneTranform.position;
+        Quaternion rotation = hipsBoneTranform.rotation;
+
+        Vector3 desiredDirection = hipsBoneTranform.right * -1;
+        if(isFacingUp)
+        {
+            desiredDirection *= -1;
+        }
+        desiredDirection.y = 0;
+        desiredDirection.Normalize();
+
+        Quaternion fromToRotation = Quaternion.FromToRotation(transform.forward,desiredDirection);
+        transform.rotation *= fromToRotation;
+
+        hipsBoneTranform.position = originalPosition;
+        hipsBoneTranform.rotation = rotation;
+    }
     public void FaceToPlayer()
     {
         Vector3 dir = playerTransform.position - transform.position;
         Quaternion nextRotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), Time.deltaTime * 10f);
         transform.rotation = nextRotation;
     }
+
+    public void PopulateBoneTransforms(BoneTransform[] boneTransforms)
+    {
+        for (int i = 0; i < bones.Length; i++)
+        {
+            boneTransforms[i].Position = bones[i].localPosition;
+            boneTransforms[i].Rotation= bones[i].localRotation;
+        }
+    }
+    public void PopulateAnimationStartBoneTransform(string clipName, BoneTransform[] boneTransform)
+    {
+        Vector3 orginalPosition = transform.position;
+        Quaternion orginalRotation = transform.rotation;
+        foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+        {
+            if(clip.name == clipName)
+            {
+                Debug.Log(" get animation tranform");
+                clip.SampleAnimation(gameObject, 0);
+                PopulateBoneTransforms(boneTransform);
+                break;
+            }
+        }
+        transform.position = orginalPosition;
+        transform.rotation = orginalRotation;
+    }
+
+    private void OnDrawGizmos()
+    {
+        
+    }
+    void DrawDebug()
+    {
+        Debug.Log("Draw debug");
+        cube.transform.position = faceDownStandUpBoneTransforms[0].Position;
+        for (int i = 0; i < faceDownStandUpBoneTransforms.Length - 1; i++)
+        {
+            Vector3 position = faceDownStandUpBoneTransforms[i].Position;
+            Debug.Log(position);
+            Debug.DrawLine(faceDownStandUpBoneTransforms[i].Position, faceDownStandUpBoneTransforms[i+1].Position,Color.red);
+        }
+    }
+
+    public string GetStandUpStateName()
+    {
+        return null;
+    }
+    public BoneTransform[] GetStandUpBoneTransforms()
+    {
+        return isFacingUp ? faceUpStandUpBoneTransforms : faceDownStandUpBoneTransforms;
+    }
+}
+
+
+public class BoneTransform
+{
+    public Vector3 Position { get; set; }
+    public Quaternion Rotation { get; set; }
 }
